@@ -8,7 +8,7 @@ let name = $state(subject.name);
 let image = $state(subject.images?.large);
 </script>
 
-<div class="group relative aspect-2/3 w-full overflow-hidden rounded-xl bg-gray-200 p-0.5 transition-all duration-300 hover:bg-[linear-gradient(45deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#9400d3)] hover:backdrop-brightness-200">
+<div class="group relative aspect-2/3 w-full overflow-hidden rounded-xl bg-gray-200 p-0.5 transition-all duration-300 hover:bg-[linear-gradient(45deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#9400d3)] hover:shadow-2xl">
     <div class="relative h-full w-full overflow-hidden rounded-[inherit] bg-white">
         <img
             src={image}

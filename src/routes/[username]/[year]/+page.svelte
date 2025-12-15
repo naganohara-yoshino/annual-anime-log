@@ -6,21 +6,43 @@ import AinimeCard from "$lib/components/AinimeCard.svelte";
 let { data }: PageProps = $props();
 </script>
 
-<div class="min-h-screen bg-gray-950 px-8 py-12 text-white">
-    <div class="mb-12">
-        <h1 class="mb-4 text-7xl font-black uppercase tracking-tighter">
-            Report for {$page.params.username} at {$page.params.year}
-        </h1>
-        <div class="relative h-1 w-full bg-blue-500">
-            <span class="absolute -top-3 left-0 bg-blue-500 px-2 text-sm font-bold text-white">
-                <!-- {$page.params.year} -->
-            </span>
-        </div>
-    </div>
+<div class="min-h-screen bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 px-4 py-8 font-sans text-gray-900 md:px-8 md:py-12">
+    <div class="mx-auto max-w-7xl rounded-3xl bg-white/20 p-6 shadow-2xl backdrop-blur-xl ring-1 ring-white/30 md:p-10">
+        
+        <header class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+                <a href="/" class="mb-2 inline-flex items-center gap-2 text-sm font-bold text-white transition-colors hover:text-purple-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="h-4 w-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                    </svg>
+                    Back to Home
+                </a>
+                <h1 class="bg-gradient-to-r from-white to-purple-100 bg-clip-text text-3xl font-extrabold text-transparent drop-shadow-sm md:text-5xl">
+                    {$page.params.username}'s {$page.params.year} Log
+                </h1>
+            </div>
+            
+            <div class="rounded-xl bg-white/10 px-4 py-2 text-purple-100 ring-1 ring-white/20 backdrop-blur-md">
+                <span class="font-bold">{data.subjects.length}</span> entries found
+            </div>
+        </header>
 
-    <div class="grid grid-cols-3 gap-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {#each data.subjects as subject}
-            <AinimeCard subject={subject} />
-        {/each}
+        {#if data.subjects.length > 0}
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 pt-2">
+                {#each data.subjects as subject}
+                    <AinimeCard subject={subject} />
+                {/each}
+            </div>
+        {:else}
+            <div class="py-20 text-center">
+                <p class="text-xl font-medium text-purple-100">No anime found for this year.</p>
+                <a href="/" class="mt-4 inline-block rounded-xl bg-white px-6 py-2 font-bold text-purple-600 shadow-lg transition-transform hover:scale-105">Try another search</a>
+            </div>
+        {/if}
+        
+    </div>
+    
+    <div class="mt-8 text-center text-xs text-white/60">
+        <p>© {new Date().getFullYear()} Annual Anime Log</p>
     </div>
 </div>
