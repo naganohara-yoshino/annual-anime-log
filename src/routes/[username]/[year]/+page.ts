@@ -12,29 +12,52 @@ const client = createClient<paths>({
 
 async function fetchAllSubjects(username: string) {
   const limit = 100;
-  let offset = 0;
-  let total = Infinity;
-  const all: SlimSubject[] = [];
 
-  while (offset < total) {
-    const { data } = await client.GET(
-      "/p1/users/{username}/collections/subjects",
-      {
-        params: {
-          path: { username },
-          query: {
-            subjectType: 2,
-            type: 2,
-            limit,
-            offset,
-          },
+  // Fetch first page to get total
+  const { data: firstPage } = await client.GET(
+    "/p1/users/{username}/collections/subjects",
+    {
+      params: {
+        path: { username },
+        query: {
+          subjectType: 2,
+          type: 2,
+          limit,
+          offset: 0,
         },
       },
-    );
+    },
+  );
 
-    all.push(...(data?.data ?? []));
-    total = data?.total ?? 0;
-    offset += limit;
+  const total = firstPage?.total ?? 0;
+  const all: SlimSubject[] = [...(firstPage?.data ?? [])];
+
+  if (total <= limit) {
+    return all;
+  }
+
+  const promises = [];
+  for (let offset = limit; offset < total; offset += limit) {
+    promises.push(
+      client
+        .GET("/p1/users/{username}/collections/subjects", {
+          params: {
+            path: { username },
+            query: {
+              subjectType: 2,
+              type: 2,
+              limit,
+              offset,
+            },
+          },
+        })
+        .then((res) => res.data?.data ?? []),
+    );
+  }
+
+  const rest = await Promise.all(promises);
+  for (const page of rest) {
+    all.push(...page);
   }
 
   return all;
