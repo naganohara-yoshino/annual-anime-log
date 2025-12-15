@@ -2,7 +2,7 @@
 import type { PageProps } from "./$types";
 import { page } from "$app/stores";
 import AinimeCard from "$lib/components/AinimeCard.svelte";
-
+import { resolve } from "$app/paths";
 let { data }: PageProps = $props();
 </script>
 
@@ -11,13 +11,13 @@ let { data }: PageProps = $props();
         
         <header class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-                <a href="/" class="mb-2 inline-flex items-center gap-2 text-sm font-bold text-white transition-colors hover:text-purple-100">
+                <a href={resolve("/")} class="mb-2 inline-flex items-center gap-2 text-sm font-bold text-white transition-colors hover:text-purple-100">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="h-4 w-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                     </svg>
                     Back to Home
                 </a>
-                <h1 class="bg-gradient-to-r from-white to-purple-100 bg-clip-text text-3xl font-extrabold text-transparent drop-shadow-sm md:text-5xl">
+                <h1 class="bg-linear-to-r from-white to-purple-100 bg-clip-text text-3xl font-extrabold text-transparent drop-shadow-sm md:text-5xl">
                     {$page.params.username}'s {$page.params.year} Log
                 </h1>
             </div>

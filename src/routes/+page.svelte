@@ -1,6 +1,7 @@
 <script lang="ts">
 import { goto } from "$app/navigation";
 import { page } from "$app/stores";
+import { resolve } from "$app/paths";
 
 let username = $state("");
 let year = $state("2025");
@@ -9,7 +10,7 @@ const years = Array.from({ length: 12 }, (_, i) => (2015 + i).toString());
 
 function handleSubmit() {
   if (username) {
-    goto(`/${username}/${year}`);
+    goto(resolve("/[username]/[year]", { username, year }));
   }
 }
 </script>
@@ -22,7 +23,7 @@ function handleSubmit() {
 <div class="flex min-h-screen items-center justify-center bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 p-4 font-sans text-gray-900">
 	<div class="w-full max-w-md overflow-hidden rounded-2xl bg-white/20 p-8 shadow-2xl backdrop-blur-xl ring-1 ring-white/30 transition-all duration-500 hover:shadow-purple-500/20">
 		<div class="mb-8 text-center">
-			<h1 class="bg-gradient-to-r from-white to-purple-100 bg-clip-text text-4xl font-extrabold text-transparent drop-shadow-sm">
+			<h1 class="bg-linear-to-r from-white to-purple-100 bg-clip-text text-4xl font-extrabold text-transparent drop-shadow-sm">
 				Annual Anime Log
 			</h1>
 			<p class="mt-2 text-purple-100 opacity-90">Track your journey through anime.</p>
