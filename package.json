@@ -23,6 +23,7 @@
 		"@tailwindcss/forms": "^0.5.10",
 		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.1.17",
+		"daisyui": "^5.5.14",
 		"openapi-typescript": "^7.10.1",
 		"svelte": "^5.45.6",
 		"svelte-check": "^4.3.4",

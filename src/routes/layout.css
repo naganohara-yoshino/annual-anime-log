@@ -3,3 +3,4 @@
 @plugin "@tailwindcss/typography";
 @import "@fontsource/fira-mono";
 @plugin "@iconify/tailwind4";
+@plugin "daisyui";
