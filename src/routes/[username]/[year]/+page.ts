@@ -1,13 +1,13 @@
 import createClient from "openapi-fetch";
-import type { paths } from "$lib/schemas/bgm_private_api";
+import type { paths } from "$lib/schemas/bgm-public-api";
 import type { PageLoad } from "./$types";
-import { onAirInYear, doneInYear } from "$lib/utils/year";
-import type { components } from "$lib/schemas/bgm_private_api";
+import { onAirInYear, doneInYear } from "$lib/anime-time";
+import type { components } from "$lib/schemas/bgm-public-api";
 
-type SlimSubject = components["schemas"]["SlimSubject"];
+type SubjectCollection = components["schemas"]["UserSubjectCollection"];
 
 const client = createClient<paths>({
-  baseUrl: "https://corsproxy.io/?url=https://next.bgm.tv/",
+  baseUrl: "https://api.bgm.tv/",
 });
 
 async function fetchAllSubjects(username: string) {
@@ -15,12 +15,12 @@ async function fetchAllSubjects(username: string) {
 
   // Fetch first page to get total
   const { data: firstPage } = await client.GET(
-    "/p1/users/{username}/collections/subjects",
+    "/v0/users/{username}/collections",
     {
       params: {
         path: { username },
         query: {
-          subjectType: 2,
+          subject_type: 2,
           type: 2,
           limit,
           offset: 0,
@@ -30,7 +30,7 @@ async function fetchAllSubjects(username: string) {
   );
 
   const total = firstPage?.total ?? 0;
-  const all: SlimSubject[] = [...(firstPage?.data ?? [])];
+  const all: SubjectCollection[] = [...(firstPage?.data ?? [])];
 
   if (total <= limit) {
     return all;
@@ -40,7 +40,7 @@ async function fetchAllSubjects(username: string) {
   for (let offset = limit; offset < total; offset += limit) {
     promises.push(
       client
-        .GET("/p1/users/{username}/collections/subjects", {
+        .GET("/v0/users/{username}/collections", {
           params: {
             path: { username },
             query: {
