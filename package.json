@@ -32,6 +32,7 @@
     "vite": "^7.2.6"
   },
   "dependencies": {
+    "@types/lodash": "^4.17.21",
     "@types/luxon": "^3.7.1",
     "lodash": "^4.17.21",
     "luxon": "^3.7.2",
