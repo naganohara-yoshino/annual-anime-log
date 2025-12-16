@@ -1,42 +1,40 @@
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-import customParseFormat from "dayjs/plugin/customParseFormat";
+import { DateTime } from "luxon";
 import type { components } from "$lib/schemas/bgm_private_api";
 
 type SlimSubject = components["schemas"]["SlimSubject"];
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(customParseFormat);
-
-const JST = "Asia/Tokyo";
-
-function fromUnixSeconds(ts: number): dayjs.Dayjs {
-  return dayjs.unix(ts).utc();
+/**
+ * Unix seconds -> UTC DateTime
+ */
+function fromUnixSecondsUtc(seconds: number): DateTime {
+  return DateTime.fromSeconds(seconds);
 }
 
-function fromJstDateString(info: string): dayjs.Dayjs | null {
-  const m = info.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
-  if (!m) return null;
+/**
+ * Parse "YYYY年M月D日" (JST) -> UTC DateTime
+ */
+function parseJstDateStringToUtc(info: string): DateTime | undefined {
+  const match = info.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
+  if (!match) {
+    return undefined;
+  }
 
-  const [, y, mo, d] = m;
+  const [, year, month, day] = match.map(Number);
 
-  const date = dayjs.tz(`${y}-${mo}-${d} 00:00:00`, "YYYY-M-D HH:mm:ss", JST);
+  const jst = DateTime.fromObject({ year, month, day }, { zone: "Asia/Tokyo" });
 
-  return date.isValid() ? date.utc() : null;
-}
-
-function nowUtc(): dayjs.Dayjs {
-  return dayjs.utc();
+  return jst.isValid ? jst.toUTC() : undefined;
 }
 
 export function onAirInYear(subject: SlimSubject, year: number): boolean {
-  const date = fromJstDateString(subject.info);
-  return date !== null && date.year() === year;
+  const dateUtc = parseJstDateStringToUtc(subject.info);
+  return dateUtc?.year === year;
 }
 
 export function doneInYear(subject: SlimSubject, year: number): boolean {
-  const date = fromUnixSeconds(subject.interest?.updatedAt ?? 0);
-  return date !== null && date.year() === year;
+  const updatedAt = subject.interest?.updatedAt;
+  if (!updatedAt) {
+    return false;
+  }
+  return fromUnixSecondsUtc(updatedAt).year === year;
 }
