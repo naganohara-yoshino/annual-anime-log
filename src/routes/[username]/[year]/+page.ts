@@ -11,7 +11,7 @@ const client = createClient<paths>({
 });
 
 async function fetchAllSubjects(username: string) {
-  const limit = 100;
+  const limit = 50;
 
   // Fetch first page to get total
   const { data: firstPage } = await client.GET(
@@ -44,7 +44,7 @@ async function fetchAllSubjects(username: string) {
           params: {
             path: { username },
             query: {
-              subjectType: 2,
+              subject_type: 2,
               type: 2,
               limit,
               offset,
