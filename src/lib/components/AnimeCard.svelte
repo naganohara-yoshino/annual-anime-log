@@ -16,7 +16,7 @@
         <img
             src={image}
             alt={name}
-            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            class="h-full w-full object-cover transition-transform duration-400 group-hover:scale-110"
         />
 
         <div

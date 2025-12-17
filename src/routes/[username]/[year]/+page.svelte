@@ -1,9 +1,14 @@
 <script lang="ts">
-    import type { PageProps } from "./$types";
-    import { page } from "$app/stores";
-    import AinimeCard from "$lib/components/AinimeCard.svelte";
+    import { page } from "$app/state";
+    import AinimeCard from "$lib/components/AnimeCard.svelte";
     import { resolve } from "$app/paths";
+    import { DateTime } from "luxon";
+    import { splitByQuarter } from "$lib/anime-classify";
+    import type { PageProps } from "./$types";
+
     let { data }: PageProps = $props();
+    const { subjects } = data;
+    const splitResult = splitByQuarter(subjects);
 </script>
 
 <div
@@ -27,7 +32,7 @@
                 <h1
                     class="bg-linear-to-r from-white to-purple-100 bg-clip-text leading-normal text-3xl font-extrabold text-transparent drop-shadow-sm md:text-5xl"
                 >
-                    {$page.params.username}'s {$page.params.year} Log
+                    {page.params.username}'s {page.params.year} Log
                 </h1>
             </div>
 
@@ -61,6 +66,6 @@
     </div>
 
     <div class="mt-8 text-center text-xs text-white/60">
-        <p>© {new Date().getFullYear()} Annual Anime Log</p>
+        <p>© {DateTime.now().year} Annual Anime Log</p>
     </div>
 </div>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 	import { resolve } from "$app/paths";
 	import { DateTime } from "luxon";
 	import _ from "lodash";
@@ -20,17 +20,7 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Annual Anime Log</title>
-	<meta
-		name="description"
-		content="View your annual anime watching history"
-	/>
-</svelte:head>
-
-<div
-	class="flex min-h-screen items-center justify-center bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 p-4 font-sans text-gray-900"
->
+<div class="flex h-full items-center justify-center">
 	<div
 		class="w-full max-w-md overflow-hidden rounded-2xl bg-white/20 p-8 shadow-2xl backdrop-blur-xl ring-1 ring-white/30 transition-all duration-500 hover:shadow-purple-500/20"
 	>
@@ -99,9 +89,5 @@
 				</div>
 			</button>
 		</form>
-
-		<div class="mt-8 text-center text-xs text-purple-200/60">
-			<p>© {thisYear} Annual Anime Log</p>
-		</div>
 	</div>
 </div>
