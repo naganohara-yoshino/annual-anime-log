@@ -78,8 +78,4 @@
             </div>
         {/if}
     </div>
-
-    <div class="mt-8 text-center text-xs text-white/60">
-        <p>© {DateTime.now().year} Annual Anime Log</p>
-    </div>
 </div>

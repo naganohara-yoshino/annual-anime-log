@@ -15,11 +15,14 @@
 </svelte:head>
 
 <div
-	class="min-h-screen bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 p-4 font-sans text-gray-900"
+	class="min-h-screen flex flex-col justify-between bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 p-4"
 >
-	<main>{@render children()}</main>
-	<footer class="absolute inset-x-0 bottom-2 m-auto mt-8">
-		<p class="text-center text-xs text-purple-200/60">
+	<main class="flex-1">
+		{@render children()}
+	</main>
+
+	<footer class="mt-auto h-8">
+		<p class="text-center text-xs text-purple-200/70">
 			© {thisYear} Annual Anime Log
 		</p>
 	</footer>

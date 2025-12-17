@@ -2,6 +2,6 @@
 	import SearchEntry from "$lib/components/SearchEntry.svelte";
 </script>
 
-<div class="flex h-full items-center justify-center">
+<div class="grid place-content-center">
 	<SearchEntry />
 </div>
