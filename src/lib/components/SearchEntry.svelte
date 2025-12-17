@@ -5,9 +5,11 @@
     import { DateTime } from "luxon";
     let username = $state("");
     let year = $state(DateTime.now().year.toString());
+    let isLoading = $state(false);
 
     function handleSubmit() {
         if (username) {
+            isLoading = true;
             goto(resolve("/[username]/[year]", { username, year }));
         }
     }
@@ -79,7 +81,13 @@
         >
             <div class="relative z-10 flex items-center justify-center gap-3">
                 View Log
-                <span class="icon-[maki--arrow] text-center text-xl"></span>
+                {#if isLoading}
+                    <span
+                        class="icon-[line-md--loading-loop] text-center text-2xl"
+                    ></span>
+                {:else}
+                    <span class="icon-[maki--arrow] text-center text-xl"></span>
+                {/if}
             </div>
         </button>
     </form>
