@@ -96,7 +96,20 @@ export async function isTvAnime(
   return platform === "TV";
 }
 
-export type SplitResult = Record<Quarter | "Others", SubjectCollection[]>;
+/**
+ * 判断条目是否为剧场版动画
+ */
+export async function isMovieAnime(
+  collectedSubject: SubjectCollection,
+): Promise<boolean> {
+  const platform = await fetchSubjectCollectionPlatform(collectedSubject);
+  if (!platform) return false;
+  return platform === "剧场版";
+}
+
+export type Platform = "TvQ1" | "TvQ2" | "TvQ3" | "TvQ4" | "Movie" | "Others";
+
+export type SplitResult = Record<Platform, SubjectCollection[]>;
 
 /**
  * 按季度 + Others 劈分 SubjectCollection[]
@@ -106,29 +119,35 @@ export async function splitByQuarter(
   collectedSubjects: SubjectCollection[],
 ): Promise<SplitResult> {
   const result: SplitResult = {
-    Q1: [],
-    Q2: [],
-    Q3: [],
-    Q4: [],
+    TvQ1: [],
+    TvQ2: [],
+    TvQ3: [],
+    TvQ4: [],
+    Movie: [],
     Others: [],
   };
 
   // 并发处理 TV 判断
   const checks = collectedSubjects.map(async (subj) => {
+    // 判断是否剧场版
+    const isMovie = await isMovieAnime(subj);
+    if (isMovie) return { subj, platform: "Movie" as const };
+
     // 判断是否 TV
     const isTv = await isTvAnime(subj);
-    if (!isTv) return { subj, quarter: "Others" as const };
+    if (!isTv) return { subj, platform: "Others" as const };
 
     // 判断季度
     const quarter = getSubjectQuarter(subj);
-    return { subj, quarter: quarter ?? ("Others" as const) };
+    if (!quarter) return { subj, platform: "Others" as const };
+    return { subj, platform: `Tv${quarter}` as const };
   });
 
   const results = await Promise.all(checks);
 
   // 按季度归类
-  for (const { subj, quarter } of results) {
-    result[quarter].push(subj);
+  for (const { subj, platform } of results) {
+    result[platform].push(subj);
   }
 
   return result;

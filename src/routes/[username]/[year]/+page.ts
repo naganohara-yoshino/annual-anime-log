@@ -13,5 +13,5 @@ export const load: PageLoad = async ({ params }) => {
       isOnAirInYear(subject, Number(year))
     );
   });
-  return { subjects: filtered };
+  return { collectedSubjects: filtered };
 };

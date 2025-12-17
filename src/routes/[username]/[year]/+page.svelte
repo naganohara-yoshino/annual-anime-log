@@ -2,26 +2,66 @@
     import { page } from "$app/state";
     import AinimeCard from "$lib/components/AnimeCard.svelte";
     import { resolve } from "$app/paths";
-    import { DateTime } from "luxon";
-    import { splitByQuarter } from "$lib/anime-classify";
+    import {
+        splitByQuarter,
+        type SplitResult,
+        type Platform,
+    } from "$lib/anime-classify";
     import { fetchUserNickname } from "$lib/bgm-api-fetch";
     import type { PageProps } from "./$types";
     import { onMount } from "svelte";
+    import { fade, fly } from "svelte/transition";
 
     let { data }: PageProps = $props();
-    const { subjects } = data;
-    const splitResult = splitByQuarter(subjects);
+    const { collectedSubjects } = data;
 
     let nickname = $state(page.params.username);
+    let isCategorizedView = $state(false);
+    let splitResult = $state<SplitResult | null>(null);
+    let loadingSplit = $state(true);
+
+    const categoryOrder: Platform[] = [
+        "Movie",
+        "TvQ1",
+        "TvQ2",
+        "TvQ3",
+        "TvQ4",
+        "Others",
+    ];
+
+    const categoryTitles: Record<Platform, string> = {
+        Movie: "Movies 🎬",
+        TvQ1: "Winter ❄️",
+        TvQ2: "Spring 🌸",
+        TvQ3: "Summer 🌻",
+        TvQ4: "Fall 🍂",
+        Others: "Others 📦",
+    };
+
+    const categoryColors: Record<Platform, string> = {
+        Movie: "from-red-400 to-pink-500",
+        TvQ1: "from-sky-400 to-indigo-500",
+        TvQ2: "from-emerald-400 to-green-500",
+        TvQ3: "from-amber-400 to-orange-500",
+        TvQ4: "from-rose-400 to-red-500",
+        Others: "from-gray-400 to-slate-500",
+    };
+
     onMount(async () => {
-        if (page.params.username !== undefined) {
-            const feteched_nickname = await fetchUserNickname(
-                page.params.username,
-            );
-            if (feteched_nickname !== undefined) {
-                nickname = feteched_nickname;
-            }
+        // Parallel execution
+        const [nicknameRes, splitRes] = await Promise.all([
+            page.params.username
+                ? fetchUserNickname(page.params.username)
+                : undefined,
+            splitByQuarter(collectedSubjects),
+        ]);
+
+        if (nicknameRes) {
+            nickname = nicknameRes;
         }
+
+        splitResult = splitRes;
+        loadingSplit = false;
     });
 </script>
 
@@ -50,21 +90,80 @@
                 </h1>
             </div>
 
-            <div
-                class="rounded-xl bg-white/10 px-4 py-2 text-purple-100 ring-1 ring-white/20 backdrop-blur-md"
-            >
-                <span class="font-bold">{data.subjects.length}</span> entries found
+            <div class="flex items-center gap-4">
+                <button
+                    onclick={() => (isCategorizedView = !isCategorizedView)}
+                    class="group relative flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 disabled:opacity-50"
+                    disabled={loadingSplit && !isCategorizedView}
+                >
+                    {#if loadingSplit}
+                        <span class="icon-[svg-spinners--ring-resize] text-xl"
+                        ></span>
+                    {:else if isCategorizedView}
+                        <span class="icon-[material-symbols--grid-view] text-xl"
+                        ></span>
+                        Show All
+                    {:else}
+                        <span class="icon-[material-symbols--category] text-xl"
+                        ></span>
+                        Categorize
+                    {/if}
+                </button>
+
+                <div
+                    class="hidden rounded-xl bg-white/10 px-4 py-2 text-purple-100 ring-1 ring-white/20 backdrop-blur-md sm:block"
+                >
+                    <span class="font-bold">{collectedSubjects.length}</span> entries
+                </div>
             </div>
         </header>
 
-        {#if data.subjects.length > 0}
-            <div
-                class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 pt-2"
-            >
-                {#each data.subjects as subject}
-                    <AinimeCard {subject} />
-                {/each}
-            </div>
+        {#if collectedSubjects.length > 0}
+            <!-- View Logic -->
+            {#if isCategorizedView && splitResult}
+                <div class="space-y-16" in:fade={{ duration: 300 }}>
+                    {#each categoryOrder as category}
+                        {@const subjects = splitResult[category]}
+                        {#if subjects.length > 0}
+                            <section>
+                                <div
+                                    class="sticky top-4 z-10 mb-6 flex items-center gap-4"
+                                >
+                                    <h2
+                                        class="rounded-2xl bg-gradient-to-r {categoryColors[
+                                            category
+                                        ]} px-6 py-2 text-2xl font-bold text-white shadow-lg"
+                                    >
+                                        {categoryTitles[category]}
+                                        <span class="ml-2 text-lg opacity-80"
+                                            >({subjects.length})</span
+                                        >
+                                    </h2>
+                                    <div
+                                        class="h-1 flex-1 rounded-full bg-white/10 backdrop-blur-md"
+                                    ></div>
+                                </div>
+                                <div
+                                    class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
+                                >
+                                    {#each subjects as subject}
+                                        <AinimeCard {subject} />
+                                    {/each}
+                                </div>
+                            </section>
+                        {/if}
+                    {/each}
+                </div>
+            {:else}
+                <div
+                    class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 pt-2"
+                    in:fade={{ duration: 300 }}
+                >
+                    {#each collectedSubjects as subject}
+                        <AinimeCard {subject} />
+                    {/each}
+                </div>
+            {/if}
         {:else}
             <div class="py-20 text-center">
                 <p class="text-xl font-medium text-purple-100">
