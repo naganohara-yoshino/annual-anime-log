@@ -1,5 +1,5 @@
 import { isDoneInYear, isOnAirInYear } from "$lib/anime-classify";
-import { fetchAllAnimeCollections } from "$lib/anime-fetch";
+import { fetchAllAnimeCollections } from "$lib/bgm-api-fetch";
 import type { PageLoad } from "./$types";
 
 export const load: PageLoad = async ({ params }) => {

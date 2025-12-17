@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { match, P } from "ts-pattern";
-import { fetchSubjectCollectionPlatform } from "$lib/anime-fetch";
+import { fetchSubjectCollectionPlatform } from "$lib/bgm-api-fetch";
 import type { components } from "$lib/schemas/bgm-public-api";
 
 type SubjectCollection = components["schemas"]["UserSubjectCollection"];

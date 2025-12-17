@@ -80,3 +80,14 @@ export async function fetchSubjectCollectionPlatform(
   const subject = await fetchSubjectById(collectedSubject.subject_id);
   return subject?.platform;
 }
+
+export async function fetchUserNickname(
+  username: string,
+): Promise<string | undefined> {
+  const { data } = await client.GET("/v0/users/{username}", {
+    params: {
+      path: { username },
+    },
+  });
+  return data?.nickname;
+}

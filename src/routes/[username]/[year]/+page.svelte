@@ -4,11 +4,22 @@
     import { resolve } from "$app/paths";
     import { DateTime } from "luxon";
     import { splitByQuarter } from "$lib/anime-classify";
+    import { fetchUserNickname } from "$lib/bgm-api-fetch";
     import type { PageProps } from "./$types";
+    import { onMount } from "svelte";
 
     let { data }: PageProps = $props();
     const { subjects } = data;
     const splitResult = splitByQuarter(subjects);
+
+    let nickname = $state("");
+    onMount(async () => {
+        if (page.params.username !== undefined) {
+            nickname =
+                (await fetchUserNickname(page.params.username)) ??
+                page.params.username;
+        }
+    });
 </script>
 
 <div
@@ -32,7 +43,7 @@
                 <h1
                     class="bg-linear-to-r from-white to-purple-100 bg-clip-text leading-normal text-3xl font-extrabold text-transparent drop-shadow-sm md:text-5xl"
                 >
-                    {page.params.username}'s {page.params.year} Log
+                    {nickname}'s {page.params.year} Log
                 </h1>
             </div>
 
