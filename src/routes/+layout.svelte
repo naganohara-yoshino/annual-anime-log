@@ -15,7 +15,7 @@
 </svelte:head>
 
 <div
-	class="min-h-screen flex flex-col justify-between bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 p-4"
+	class="relative flex min-h-screen min-w-screen flex-col overflow-x-auto bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 p-4"
 >
 	<main class="flex-1">
 		{@render children()}

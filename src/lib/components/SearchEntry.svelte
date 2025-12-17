@@ -19,7 +19,7 @@
 </script>
 
 <div
-    class="w-full max-w-md overflow-hidden rounded-2xl bg-white/20 p-8 shadow-2xl backdrop-blur-xl ring-1 ring-white/30 transition-all duration-500 hover:shadow-purple-500/20"
+    class="w-full min-w-105 max-w-md overflow-hidden rounded-2xl bg-white/20 p-8 shadow-2xl backdrop-blur-xl ring-1 ring-white/30 transition-all duration-500 hover:shadow-purple-500/20"
 >
     <div class="mb-8 text-center">
         <h1
