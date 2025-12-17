@@ -65,9 +65,7 @@
     });
 </script>
 
-<div
-    class="min-h-screen bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 px-4 py-8 font-sans text-gray-900 md:px-8 md:py-12"
->
+<div class="min-h-screen px-4 py-8 font-sans text-gray-900 md:px-8 md:py-12">
     <div
         class="mx-auto max-w-7xl rounded-3xl bg-white/20 p-6 shadow-2xl backdrop-blur-xl ring-1 ring-white/30 md:p-10"
     >
