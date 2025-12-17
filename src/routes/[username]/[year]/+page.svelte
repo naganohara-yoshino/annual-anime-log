@@ -12,12 +12,15 @@
     const { subjects } = data;
     const splitResult = splitByQuarter(subjects);
 
-    let nickname = $state("");
+    let nickname = $state(page.params.username);
     onMount(async () => {
         if (page.params.username !== undefined) {
-            nickname =
-                (await fetchUserNickname(page.params.username)) ??
-                page.params.username;
+            const feteched_nickname = await fetchUserNickname(
+                page.params.username,
+            );
+            if (feteched_nickname !== undefined) {
+                nickname = feteched_nickname;
+            }
         }
     });
 </script>
