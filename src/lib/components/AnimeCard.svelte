@@ -8,7 +8,7 @@
 </script>
 
 <div
-    class="group relative aspect-2/3 w-full overflow-hidden rounded-xl bg-gray-200 p-0.5 transition-all duration-300 hover:bg-[linear-gradient(45deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#9400d3)] hover:shadow-2xl"
+    class="group relative aspect-2/3 w-full overflow-hidden rounded-xl border-2 border-white hover:border-amber-500 hover:shadow-2xl"
 >
     <div
         class="relative h-full w-full overflow-hidden rounded-[inherit] bg-white"
