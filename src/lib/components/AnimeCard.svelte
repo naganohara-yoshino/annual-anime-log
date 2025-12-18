@@ -6,7 +6,7 @@
         $props();
 
     const name = collectedSubject.subject?.name;
-    const imageUrl = collectedSubject.subject?.images?.large ?? "";
+    const imageUrl = collectedSubject.subject?.images?.medium;
 </script>
 
 <div
