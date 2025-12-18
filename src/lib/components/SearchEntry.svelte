@@ -63,15 +63,11 @@
                 class="mb-2 block text-sm font-medium text-white/90">Year</label
             >
             <div class="relative">
-                <select
+                <input
                     id="year"
                     bind:value={year}
-                    class="h-11 w-full leading-normal appearance-none rounded-xl border-0 bg-white/10 px-4 py-[2.9] text-white outline-hidden ring-1 ring-white/20 transition-all duration-300 focus:bg-white/20 focus:ring-2 focus:ring-purple-300/50 [&>option]:text-gray-900 select select-ghost"
-                >
-                    {#each years as y}
-                        <option value={y}>{y}</option>
-                    {/each}
-                </select>
+                    class="h-11 w-full leading-normal appearance-none rounded-xl border-0 bg-white/10 px-4 py-3 text-white outline-hidden ring-1 ring-white/20 transition-all duration-300 focus:ring-2 focus:ring-purple-300/50 input input-ghost"
+                />
             </div>
         </div>
 
