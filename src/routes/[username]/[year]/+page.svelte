@@ -70,10 +70,8 @@
     <div
         class="mx-auto max-w-7xl rounded-3xl bg-white/20 p-6 shadow-2xl backdrop-blur-xl ring-1 ring-white/30 md:p-10"
     >
-        <header
-            class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
-        >
-            <div>
+        <header class="mb-10 flex flex-col gap-4">
+            <div class="-mb-5">
                 <a
                     href={resolve("/")}
                     class="mb-2 inline-flex items-center gap-2 text-sm font-bold text-white transition-colors hover:text-purple-100"
@@ -82,42 +80,47 @@
                     ></span>
                     Back to Home
                 </a>
+            </div>
+            <div
+                class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
+            >
                 <h1
                     class="bg-linear-to-r from-white to-purple-100 bg-clip-text leading-normal text-3xl font-extrabold text-transparent drop-shadow-sm md:text-5xl"
                 >
                     {nickname}'s {page.params.year} Log
                 </h1>
-            </div>
 
-            <div class="flex gap-4 place-items-end place-content-end">
-                <button
-                    onclick={() => (isCategorizedView = !isCategorizedView)}
-                    class="group relative flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 disabled:opacity-50"
-                    disabled={loadingSplit && !isCategorizedView}
-                >
-                    {#if loadingSplit}
-                        <span
-                            class="shrink-0 icon-[svg-spinners--ring-resize] text-xl"
-                        ></span>
-                        Fetching...
-                    {:else if isCategorizedView}
-                        <span
-                            class="shrink-0 icon-[material-symbols--grid-view] text-xl"
-                        ></span>
-                        Show All
-                    {:else}
-                        <span
-                            class="shrink-0 icon-[material-symbols--category] text-xl"
-                        ></span>
-                        Categorize
-                    {/if}
-                </button>
+                <div class="grid shrink-0 grid-cols-2 gap-4">
+                    <button
+                        onclick={() => (isCategorizedView = !isCategorizedView)}
+                        class="flex-1 max-w-lg group relative flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 disabled:opacity-50"
+                        disabled={loadingSplit && !isCategorizedView}
+                    >
+                        {#if loadingSplit}
+                            <span
+                                class="shrink-0 icon-[svg-spinners--ring-resize] text-xl"
+                            ></span>
+                            Fetching...
+                        {:else if isCategorizedView}
+                            <span
+                                class="shrink-0 icon-[material-symbols--grid-view] text-xl"
+                            ></span>
+                            Show All
+                        {:else}
+                            <span
+                                class="shrink-0 icon-[material-symbols--category] text-xl"
+                            ></span>
+                            Categorize
+                        {/if}
+                    </button>
 
-                <div
-                    class="relative flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 font-bold text-white ring-1 ring-white/20 backdrop-blur-md"
-                >
-                    <span class="shrink-0 icon-[f7--number]"></span>
-                    <span class="font-bold">{collectedSubjects.length}</span> entries
+                    <div
+                        class="flex-1 max-w-lg relative flex items-center gap-2 rounded-xl px-4 py-2 font-bold text-purple-100 ring-1 ring-white/20 backdrop-blur-md"
+                    >
+                        <span class="shrink-0 icon-[f7--number]"></span>
+                        <span class="font-bold">{collectedSubjects.length}</span
+                        > entries
+                    </div>
                 </div>
             </div>
         </header>

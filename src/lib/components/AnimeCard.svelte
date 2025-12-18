@@ -16,7 +16,7 @@
         class="relative h-full w-full overflow-hidden rounded-[inherit] bg-white"
     >
         <img
-            src="https://wsrv.nl/?url={encodeURIComponent(imageUrl)}&output.png"
+            src={imageUrl}
             alt={name}
             class="h-full w-full object-cover transition-transform duration-400 group-hover:scale-110"
         />
