@@ -38,10 +38,10 @@ export type Quarter = "Q1" | "Q2" | "Q3" | "Q4";
 /**
  * 返回条目的季度
  * 规则：
- * Q1: 01-01 至 03-21
- * Q2: 04-01(-7d) 至 06-21
- * Q3: 07-01(-7d) 至 09-21
- * Q4: 10-01(-7d) 至 12-31
+ * Q1: 01-01 至 04-01(-7d) [)
+ * Q2: 04-01(-7d) 至 07-01(-7d) [)
+ * Q3: 07-01(-7d) 至 10-01(-7d) [)
+ * Q4: 10-01(-7d) 至 12-31 []
  */
 export function getSubjectQuarter(
   collectedSubject: SubjectCollection,
@@ -59,23 +59,23 @@ export function getSubjectQuarter(
     DateTime.fromObject({ year, month: m, day: d }, zone);
 
   const intervals = [
-    { name: "Q1", start: d(1, 1), end: d(3, 21) },
-    { name: "Q2", start: d(4, 1).minus(7), end: d(6, 21) },
-    { name: "Q3", start: d(7, 1).minus(7), end: d(9, 21) },
+    { name: "Q1", start: d(1, 1), end: d(4, 1).minus(7) },
+    { name: "Q2", start: d(4, 1).minus(7), end: d(7, 1).minus(7) },
+    { name: "Q3", start: d(7, 1).minus(7), end: d(10, 1).minus(7) },
     { name: "Q4", start: d(10, 1).minus(7), end: d(12, 31) },
   ] as const;
 
   return match(dt)
     .with(
-      P.when((t) => t >= intervals[0].start && t <= intervals[0].end),
+      P.when((t) => t >= intervals[0].start && t < intervals[0].end),
       () => "Q1" as const,
     )
     .with(
-      P.when((t) => t >= intervals[1].start && t <= intervals[1].end),
+      P.when((t) => t >= intervals[1].start && t < intervals[1].end),
       () => "Q2" as const,
     )
     .with(
-      P.when((t) => t >= intervals[2].start && t <= intervals[2].end),
+      P.when((t) => t >= intervals[2].start && t < intervals[2].end),
       () => "Q3" as const,
     )
     .with(
