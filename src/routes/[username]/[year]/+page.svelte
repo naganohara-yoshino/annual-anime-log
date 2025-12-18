@@ -11,6 +11,7 @@
     import type { PageProps } from "./$types";
     import { onMount } from "svelte";
     import { fade, fly } from "svelte/transition";
+    import ScreenShotFab from "$lib/components/ScreenShotFab.svelte";
 
     let { data }: PageProps = $props();
     const { collectedSubjects } = data;
@@ -88,7 +89,7 @@
                 </h1>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="grid grid-cols-2 gap-4 place-content-center">
                 <button
                     onclick={() => (isCategorizedView = !isCategorizedView)}
                     class="group relative flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 disabled:opacity-50"
@@ -97,6 +98,7 @@
                     {#if loadingSplit}
                         <span class="icon-[svg-spinners--ring-resize] text-xl"
                         ></span>
+                        Fetching...
                     {:else if isCategorizedView}
                         <span class="icon-[material-symbols--grid-view] text-xl"
                         ></span>
@@ -109,8 +111,9 @@
                 </button>
 
                 <div
-                    class="hidden rounded-xl bg-white/10 px-4 py-2 text-purple-100 ring-1 ring-white/20 backdrop-blur-md sm:block"
+                    class="relative flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 font-bold text-white ring-1 ring-white/20 backdrop-blur-md"
                 >
+                    <span class="icon-[f7--number]"></span>
                     <span class="font-bold">{collectedSubjects.length}</span> entries
                 </div>
             </div>
@@ -121,8 +124,8 @@
             {#if isCategorizedView && splitResult}
                 <div class="space-y-16" in:fade={{ duration: 300 }}>
                     {#each categoryOrder as category}
-                        {@const subjects = splitResult[category]}
-                        {#if subjects.length > 0}
+                        {@const splittedSubjects = splitResult[category]}
+                        {#if splittedSubjects.length > 0}
                             <section>
                                 <div
                                     class="sticky top-4 z-10 mb-6 flex items-center gap-4"
@@ -134,7 +137,7 @@
                                     >
                                         {categoryTitles[category]}
                                         <span class="ml-2 text-lg opacity-80"
-                                            >({subjects.length})</span
+                                            >({splittedSubjects.length})</span
                                         >
                                     </h2>
                                     <div
@@ -144,8 +147,8 @@
                                 <div
                                     class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
                                 >
-                                    {#each subjects as subject}
-                                        <AinimeCard {subject} />
+                                    {#each splittedSubjects as collectedSubject}
+                                        <AinimeCard {collectedSubject} />
                                     {/each}
                                 </div>
                             </section>
@@ -157,8 +160,8 @@
                     class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 pt-2"
                     in:fade={{ duration: 300 }}
                 >
-                    {#each collectedSubjects as subject}
-                        <AinimeCard {subject} />
+                    {#each collectedSubjects as collectedSubject}
+                        <AinimeCard {collectedSubject} />
                     {/each}
                 </div>
             {/if}
@@ -175,4 +178,5 @@
             </div>
         {/if}
     </div>
+    <ScreenShotFab />
 </div>

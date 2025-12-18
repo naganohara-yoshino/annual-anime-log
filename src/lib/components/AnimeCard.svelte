@@ -1,10 +1,12 @@
 <script lang="ts">
     import type { components } from "$lib/schemas/bgm-public-api";
     type SubjectCollection = components["schemas"]["UserSubjectCollection"];
-    let { subject }: { subject: SubjectCollection } = $props();
 
-    let name = $state(subject.subject?.name);
-    let image = $state(subject.subject?.images?.large);
+    let { collectedSubject }: { collectedSubject: SubjectCollection } =
+        $props();
+
+    const name = collectedSubject.subject?.name;
+    const imageUrl = collectedSubject.subject?.images?.large ?? "";
 </script>
 
 <div
@@ -14,7 +16,7 @@
         class="relative h-full w-full overflow-hidden rounded-[inherit] bg-white"
     >
         <img
-            src={image}
+            src="https://wsrv.nl/?url={encodeURIComponent(imageUrl)}&output.png"
             alt={name}
             class="h-full w-full object-cover transition-transform duration-400 group-hover:scale-110"
         />

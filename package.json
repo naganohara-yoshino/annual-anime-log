@@ -34,6 +34,8 @@
   "dependencies": {
     "@types/lodash": "^4.17.21",
     "@types/luxon": "^3.7.1",
+    "dom-to-image": "^2.6.0",
+    "file-saver": "^2.0.5",
     "lodash": "^4.17.21",
     "luxon": "^3.7.2",
     "openapi-fetch": "^0.15.0",
