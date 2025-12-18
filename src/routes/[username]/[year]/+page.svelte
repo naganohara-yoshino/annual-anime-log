@@ -89,22 +89,25 @@
                 </h1>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 place-content-center">
+            <div class="flex gap-4 place-items-end place-content-end">
                 <button
                     onclick={() => (isCategorizedView = !isCategorizedView)}
                     class="group relative flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 disabled:opacity-50"
                     disabled={loadingSplit && !isCategorizedView}
                 >
                     {#if loadingSplit}
-                        <span class="icon-[svg-spinners--ring-resize] text-xl"
+                        <span
+                            class="shrink-0 icon-[svg-spinners--ring-resize] text-xl"
                         ></span>
                         Fetching...
                     {:else if isCategorizedView}
-                        <span class="icon-[material-symbols--grid-view] text-xl"
+                        <span
+                            class="shrink-0 icon-[material-symbols--grid-view] text-xl"
                         ></span>
                         Show All
                     {:else}
-                        <span class="icon-[material-symbols--category] text-xl"
+                        <span
+                            class="shrink-0 icon-[material-symbols--category] text-xl"
                         ></span>
                         Categorize
                     {/if}
@@ -113,7 +116,7 @@
                 <div
                     class="relative flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 font-bold text-white ring-1 ring-white/20 backdrop-blur-md"
                 >
-                    <span class="icon-[f7--number]"></span>
+                    <span class="shrink-0 icon-[f7--number]"></span>
                     <span class="font-bold">{collectedSubjects.length}</span> entries
                 </div>
             </div>
