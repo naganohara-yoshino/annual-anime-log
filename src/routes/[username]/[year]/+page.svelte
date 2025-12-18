@@ -184,5 +184,4 @@
             </div>
         {/if}
     </div>
-    <ScreenShotFab />
 </div>
