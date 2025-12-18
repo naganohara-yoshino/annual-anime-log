@@ -98,17 +98,17 @@
                     >
                         {#if loadingSplit}
                             <span
-                                class="shrink-0 icon-[svg-spinners--ring-resize] text-xl"
+                                class="shrink-0 icon-[svg-spinners--ring-resize]"
                             ></span>
                             Fetching...
                         {:else if isCategorizedView}
                             <span
-                                class="shrink-0 icon-[material-symbols--grid-view] text-xl"
+                                class="shrink-0 icon-[material-symbols--grid-view]"
                             ></span>
                             Show All
                         {:else}
                             <span
-                                class="shrink-0 icon-[material-symbols--category] text-xl"
+                                class="shrink-0 icon-[material-symbols--category]"
                             ></span>
                             Categorize
                         {/if}
