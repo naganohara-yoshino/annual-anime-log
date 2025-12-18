@@ -38,10 +38,10 @@ export type Quarter = "Q1" | "Q2" | "Q3" | "Q4";
 /**
  * 返回条目的季度
  * 规则：
- * Q1: 01-01 至 04-01(-7d) [)
- * Q2: 04-01(-7d) 至 07-01(-7d) [)
- * Q3: 07-01(-7d) 至 10-01(-7d) [)
- * Q4: 10-01(-7d) 至 12-31 []
+ * Q1: 01-01 至 04-01(-5d) [)
+ * Q2: 04-01(-5d) 至 07-01(-5d) [)
+ * Q3: 07-01(-5d) 至 10-01(-5d) [)
+ * Q4: 10-01(-5d) 至 12-31 []
  */
 export function getSubjectQuarter(
   collectedSubject: SubjectCollection,
@@ -59,10 +59,10 @@ export function getSubjectQuarter(
     DateTime.fromObject({ year, month: m, day: d }, zone);
 
   const intervals = [
-    { name: "Q1", start: d(1, 1), end: d(4, 1).minus(7) },
-    { name: "Q2", start: d(4, 1).minus(7), end: d(7, 1).minus(7) },
-    { name: "Q3", start: d(7, 1).minus(7), end: d(10, 1).minus(7) },
-    { name: "Q4", start: d(10, 1).minus(7), end: d(12, 31) },
+    { name: "Q1", start: d(1, 1), end: d(4, 1).minus(5) },
+    { name: "Q2", start: d(4, 1).minus(5), end: d(7, 1).minus(5) },
+    { name: "Q3", start: d(7, 1).minus(5), end: d(10, 1).minus(5) },
+    { name: "Q4", start: d(10, 1).minus(5), end: d(12, 31) },
   ] as const;
 
   return match(dt)
