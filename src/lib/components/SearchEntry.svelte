@@ -82,8 +82,7 @@
             <div class="relative z-10 flex items-center justify-center gap-3">
                 View Log
                 {#if isLoading}
-                    <span
-                        class="icon-[line-md--loading-loop] text-center text-2xl"
+                    <span class="icon-[svg-spinners--ring-resize] text-xl"
                     ></span>
                 {:else}
                     <span class="icon-[maki--arrow] text-center text-xl"></span>

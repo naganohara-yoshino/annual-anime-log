@@ -11,6 +11,7 @@
     import type { PageProps } from "./$types";
     import { onMount } from "svelte";
     import { fade, fly } from "svelte/transition";
+    import ScreenShotFab from "$lib/components/ScreenShotFab.svelte";
 
     let { data }: PageProps = $props();
     const { collectedSubjects } = data;
@@ -69,10 +70,8 @@
     <div
         class="mx-auto max-w-7xl rounded-3xl bg-white/20 p-6 shadow-2xl backdrop-blur-xl ring-1 ring-white/30 md:p-10"
     >
-        <header
-            class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
-        >
-            <div>
+        <header class="mb-10 flex flex-col gap-4">
+            <div class="-mb-5">
                 <a
                     href={resolve("/")}
                     class="mb-2 inline-flex items-center gap-2 text-sm font-bold text-white transition-colors hover:text-purple-100"
@@ -81,37 +80,47 @@
                     ></span>
                     Back to Home
                 </a>
+            </div>
+            <div
+                class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
+            >
                 <h1
                     class="bg-linear-to-r from-white to-purple-100 bg-clip-text leading-normal text-3xl font-extrabold text-transparent drop-shadow-sm md:text-5xl"
                 >
                     {nickname}'s {page.params.year} Log
                 </h1>
-            </div>
 
-            <div class="flex items-center gap-4">
-                <button
-                    onclick={() => (isCategorizedView = !isCategorizedView)}
-                    class="group relative flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 disabled:opacity-50"
-                    disabled={loadingSplit && !isCategorizedView}
-                >
-                    {#if loadingSplit}
-                        <span class="icon-[svg-spinners--ring-resize] text-xl"
-                        ></span>
-                    {:else if isCategorizedView}
-                        <span class="icon-[material-symbols--grid-view] text-xl"
-                        ></span>
-                        Show All
-                    {:else}
-                        <span class="icon-[material-symbols--category] text-xl"
-                        ></span>
-                        Categorize
-                    {/if}
-                </button>
+                <div class="grid shrink-0 grid-cols-2 gap-4">
+                    <button
+                        onclick={() => (isCategorizedView = !isCategorizedView)}
+                        class="flex-1 max-w-lg group relative flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 disabled:opacity-50"
+                        disabled={loadingSplit && !isCategorizedView}
+                    >
+                        {#if loadingSplit}
+                            <span
+                                class="shrink-0 icon-[svg-spinners--ring-resize] text-xl"
+                            ></span>
+                            Fetching...
+                        {:else if isCategorizedView}
+                            <span
+                                class="shrink-0 icon-[material-symbols--grid-view] text-xl"
+                            ></span>
+                            Show All
+                        {:else}
+                            <span
+                                class="shrink-0 icon-[material-symbols--category] text-xl"
+                            ></span>
+                            Categorize
+                        {/if}
+                    </button>
 
-                <div
-                    class="hidden rounded-xl bg-white/10 px-4 py-2 text-purple-100 ring-1 ring-white/20 backdrop-blur-md sm:block"
-                >
-                    <span class="font-bold">{collectedSubjects.length}</span> entries
+                    <div
+                        class="flex-1 max-w-lg relative flex items-center gap-2 rounded-xl px-4 py-2 font-bold text-purple-100 ring-1 ring-white/20 backdrop-blur-md"
+                    >
+                        <span class="shrink-0 icon-[f7--number]"></span>
+                        <span class="font-bold">{collectedSubjects.length}</span
+                        > entries
+                    </div>
                 </div>
             </div>
         </header>
@@ -121,8 +130,8 @@
             {#if isCategorizedView && splitResult}
                 <div class="space-y-16" in:fade={{ duration: 300 }}>
                     {#each categoryOrder as category}
-                        {@const subjects = splitResult[category]}
-                        {#if subjects.length > 0}
+                        {@const splittedSubjects = splitResult[category]}
+                        {#if splittedSubjects.length > 0}
                             <section>
                                 <div
                                     class="sticky top-4 z-10 mb-6 flex items-center gap-4"
@@ -134,7 +143,7 @@
                                     >
                                         {categoryTitles[category]}
                                         <span class="ml-2 text-lg opacity-80"
-                                            >({subjects.length})</span
+                                            >({splittedSubjects.length})</span
                                         >
                                     </h2>
                                     <div
@@ -144,8 +153,8 @@
                                 <div
                                     class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
                                 >
-                                    {#each subjects as subject}
-                                        <AinimeCard {subject} />
+                                    {#each splittedSubjects as collectedSubject}
+                                        <AinimeCard {collectedSubject} />
                                     {/each}
                                 </div>
                             </section>
@@ -157,8 +166,8 @@
                     class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 pt-2"
                     in:fade={{ duration: 300 }}
                 >
-                    {#each collectedSubjects as subject}
-                        <AinimeCard {subject} />
+                    {#each collectedSubjects as collectedSubject}
+                        <AinimeCard {collectedSubject} />
                     {/each}
                 </div>
             {/if}
